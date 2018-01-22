@@ -1,0 +1,3 @@
+{"texture":"character_sprite.png","x":0,"y":96,"width":32,"height":32,"frameTime":0.2},
+{"texture":"character_sprite.png","x":32,"y":96,"width":32,"height":32,"frameTime":0.2},
+{"texture":"character_sprite.png","x":64,"y":96,"width":32,"height":32,"frameTime":0.2}

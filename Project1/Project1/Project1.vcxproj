@@ -167,6 +167,10 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="PathfinderMonster.cpp" />
+    <ClCompile Include="PathfinderPlayer.cpp" />
+    <ClCompile Include="PathfindingldeState.cpp" />
+    <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RecoveryItem.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -195,6 +199,10 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="PathfinderMonster.h" />
+    <ClInclude Include="PathfinderPlayer.h" />
+    <ClInclude Include="PathfindingldeState.h" />
+    <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RecoveryItem.h" />
     <ClInclude Include="ResourceManager.h" />

@@ -15,11 +15,13 @@ enum eStateType
 	ST_ATTACK,
 	ST_DEFENSE,
 	ST_DEAD,
+	ST_PATHFINDING,
 };
 
 class Sprite;
 class Font;
 class State;
+class TileCell;
 
 class Character : public Component
 {
@@ -58,6 +60,7 @@ protected:
 	State* _state;
 
 public:
+	virtual void InitState(std::wstring textureFilename, std::wstring scriptFilename);
 	void ChangeState(eStateType stateType);
 
 	// AI
@@ -108,4 +111,15 @@ public:
 	// UI
 private:
 	Font* _font;
+
+	// Pathfinding
+protected:
+	TileCell* _targetTileCell;
+
+public:
+	void SetTargetTileCell(TileCell* targetTileCell)
+	{
+		_targetTileCell = targetTileCell;
+	}
+	TileCell* GetTargetTileCell() { return _targetTileCell; }
 };

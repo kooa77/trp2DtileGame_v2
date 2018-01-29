@@ -2,9 +2,11 @@
 #include "TileObject.h"
 
 
-TileObject::TileObject(std::wstring name, Sprite* sprite) : Component(name)
+TileObject::TileObject(std::wstring name, Sprite* sprite, int tileX, int tileY) : Component(name)
 {
 	_sprite = sprite;
+	_tilePosition.x = tileX;
+	_tilePosition.y = tileY;
 }
 
 TileObject::~TileObject()

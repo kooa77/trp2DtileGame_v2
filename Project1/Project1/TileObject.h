@@ -10,7 +10,8 @@ private:
 	Sprite* _sprite;
 
 public:
-	TileObject(std::wstring name, Sprite* sprite);
+	//TileObject(std::wstring name, Sprite* sprite);
+	TileObject(std::wstring name, Sprite* sprite, int tileX, int tileY);
 	~TileObject();
 
 public:

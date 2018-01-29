@@ -58,32 +58,7 @@ void Character::Init(std::wstring textureFilename, std::wstring scriptFilename)
 		_font->SetText(text);
 	}
 
-	// StateMap  备己
-	{
-		State* state = new IdleState(this);
-		state->CreateSprite(textureFilename, scriptFilename);
-		_stateMap[eStateType::ST_IDLE] = state;
-	}
-	{
-		State* state = new MoveState(this);
-		state->CreateSprite(textureFilename, scriptFilename);
-		_stateMap[eStateType::ST_MOVE] = state;
-	}
-	{
-		State* state = new AttackState(this);
-		state->CreateSprite(textureFilename, scriptFilename);
-		_stateMap[eStateType::ST_ATTACK] = state;
-	}
-	{
-		State* state = new DefenseState(this);
-		state->CreateSprite(textureFilename, scriptFilename);
-		_stateMap[eStateType::ST_DEFENSE] = state;
-	}
-	{
-		State* state = new DeadState(this);
-		state->CreateSprite(textureFilename, scriptFilename);
-		_stateMap[eStateType::ST_DEAD] = state;
-	}
+	InitState(textureFilename, scriptFilename);
 	ChangeState(eStateType::ST_IDLE);
 }
 
@@ -148,6 +123,36 @@ void Character::ReceiveMsg(const sMessageParam& param)
 		_hp += param.recoveryHP;
 		if (100 < _hp)
 			_hp = 100;
+	}
+}
+
+void Character::InitState(std::wstring textureFilename, std::wstring scriptFilename)
+{
+	// StateMap  备己
+	{
+		State* state = new IdleState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_IDLE] = state;
+	}
+	{
+		State* state = new MoveState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_MOVE] = state;
+	}
+	{
+		State* state = new AttackState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_ATTACK] = state;
+	}
+	{
+		State* state = new DefenseState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_DEFENSE] = state;
+	}
+	{
+		State* state = new DeadState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_DEAD] = state;
 	}
 }
 

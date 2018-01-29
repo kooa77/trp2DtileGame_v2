@@ -77,13 +77,12 @@ void Map::Init(std::wstring textureFilename, std::wstring scriptFilename)
 				Sprite* sprite = _spriteList[spriteIndex];
 				
 				TileCell* tileCell = new TileCell();
-				//tileCell->Init(sprite);
-				tileCell->Init();
+				tileCell->Init(x, y);
 
 				// 타일 오브젝트를 생성
 				WCHAR name[256];
 				wsprintf(name, L"map_layer01_%d_%d", line, x);
-				TileObject* tileObject = new TileObject(name, sprite);
+				TileObject* tileObject = new TileObject(name, sprite, x, y);
 				tileCell->AddComponent(tileObject);
 
 				rowList.push_back(tileCell);
@@ -134,7 +133,7 @@ void Map::Init(std::wstring textureFilename, std::wstring scriptFilename)
 					// 타일 오브젝트를 생성
 					WCHAR name[256];
 					wsprintf(name, L"map_layer02_%d_%d", line, x);
-					TileObject* tileObject = new TileObject(name, sprite);
+					TileObject* tileObject = new TileObject(name, sprite, x, y);
 					tileObject->SetCanMove(false);
 					tileCell->AddComponent(tileObject);
 				}
@@ -404,4 +403,18 @@ void Map::MoveUp()
 void Map::MoveDown()
 {
 	_startY++;
+}
+
+void Map::ResetPahtfinding()
+{
+	for (int y = 0; y < _height; y++)
+	{
+		for (int x = 0; x < _width; x++)
+		{
+			TilePoint tilePosition;
+			tilePosition.x = x;
+			tilePosition.y = y;
+			GetTileCell(tilePosition)->ResetPathfinding();
+		}
+	}
 }

@@ -15,7 +15,7 @@ public:
 	TileCell();
 	~TileCell();
 
-	void Init();
+	void Init(int tileX, int tileY);
 	void Update(float deltaTime);
 	void Render();
 	
@@ -36,4 +36,34 @@ public:
 	std::list<Component*> GetComponentList() { return _componentList; }
 
 	bool CanMove();
+
+	// TilePosition
+private:
+	TilePoint _tilePostion;
+
+public:
+	TilePoint GetTilePosition() { return _tilePostion; }
+
+	// Pathfinding
+private:
+	bool _pathfindingSearch;
+	TileCell* _prevTileCell;
+	float _distanceFromStart;
+
+public:
+	void ResetPathfinding()
+	{
+		_pathfindingSearch = false;
+		_prevTileCell = NULL;
+		_distanceFromStart = 0.0f;
+	}
+
+	bool IsSearchPathfinding() { return _pathfindingSearch; }
+	void SearchPathfind() { _pathfindingSearch = true; }
+
+	TileCell* GetPrevTileCell() { return _prevTileCell; }
+	void SetPrevTileCell(TileCell* tileCell) { _prevTileCell = tileCell; }
+
+	float GetDistanceFromStart() { return _distanceFromStart; }
+	void SetDistanceFromStart(float distanceFromStart) { _distanceFromStart = distanceFromStart; }
 };

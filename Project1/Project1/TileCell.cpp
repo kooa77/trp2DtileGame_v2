@@ -12,10 +12,10 @@ TileCell::~TileCell()
 {
 }
 
-//void TileCell::Init(Sprite* sprite)
-void TileCell::Init()
+void TileCell::Init(int tileX, int tileY)
 {
-	//_sprite = sprite;
+	_tilePostion.x = tileX;
+	_tilePostion.y = tileY;
 }
 
 void TileCell::Update(float deltaTime)

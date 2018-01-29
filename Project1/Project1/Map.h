@@ -74,4 +74,8 @@ public:
 	void MoveRight();
 	void MoveUp();
 	void MoveDown();
+
+	// Pathfinding
+public:
+	void ResetPahtfinding();
 };

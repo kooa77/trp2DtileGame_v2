@@ -10,14 +10,20 @@
 #include "NPC.h"
 #include "Monster.h"
 #include "Player.h"
+#include "PathfinderPlayer.h"
+#include "PathfinderMonster.h"
 #include "RecoveryItem.h"
 #include "Sprite.h"
 #include "Font.h"
+#include "TileCell.h"
+#include <ctime>
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
 {
+	srand(time(NULL));
+
 	int clientWidth = 1280;
 	int clientHeight = 800;
 	bool isWindow = true;
@@ -150,7 +156,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 	std::list<Component*> stageComponentList;
 
 	Map* map = new Map(L"Map");
-	map->Init(L"MapSprite.png", L"MapData_Layer");
+	//map->Init(L"MapSprite.png", L"MapData_Layer");
+	map->Init(L"MapSprite.png", L"PathMap_Layer");
 	stageComponentList.push_back(map);
 
 	// 회복 아이템 배치
@@ -163,10 +170,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 		stageComponentList.push_back(item);
 	}
 
-	Character* character = new Player(L"player");
+	//Character* character = new Player(L"player");
+	Character* character = new PathfinderPlayer(L"player");
 	character->Init(L"character_sprite.png", L"player");
 	stageComponentList.push_back(character);
 
+	/* 
 	for (int i = 0; i < 20; i++)
 	{
 		WCHAR name[256];
@@ -184,8 +193,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 		monster->Init(L"monster_sprite_pack.png", L"npc");
 		stageComponentList.push_back(monster);
 	}
+	*/
+	Monster* monster = new PathfinderMonster(L"monster");
+	monster->Init(L"monster_sprite_pack.png", L"npc");
+	stageComponentList.push_back(monster);
 	
-	map->SetViewer(character);
+	//map->SetViewer(character);
+	TilePoint tilePosition;
+	tilePosition.x = map->GetWidth() / 2;
+	tilePosition.y = map->GetHeight() / 2 + 2;
+	TileCell* tileCell = map->GetTileCell(tilePosition);
+	Component* midTileObject = tileCell->GetComponentList().front();
+	map->SetViewer(midTileObject);
+
+	TileCell* targetTileCell = map->GetTileCell(monster->GetTilePosition());
+	character->SetTargetTileCell(targetTileCell);
 
 	// FPS 결정 (60fps)
 	float frameTime = 1.0f / 60.0f;

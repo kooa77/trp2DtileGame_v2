@@ -18,6 +18,8 @@ InputSystem::InputSystem()
 	{
 		_keyState[i] = eKeyState::KEY_UP;
 	}
+
+	_isMouseDown = false;
 }
 
 void InputSystem::KeyDown(unsigned int keyCode)
@@ -35,4 +37,16 @@ bool InputSystem::IsKeyDown(unsigned int keyCode)
 	if (eKeyState::KEY_DOWN == _keyState[keyCode])
 		return true;
 	return false;
+}
+
+void InputSystem::MouseDown(int x, int y)
+{
+	_isMouseDown = true;
+	_mouseX = x;
+	_mouseY = y;
+}
+
+void InputSystem::MouseUp()
+{
+	_isMouseDown = false;
 }

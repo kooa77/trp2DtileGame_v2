@@ -3,6 +3,8 @@
 
 #include "PathfindingldeState.h"
 #include "PathfindingState.h"
+#include "PathfindingImmedateState.h"
+#include "PathfindingMoveState.h"
 
 #include "PathfinderPlayer.h"
 
@@ -45,8 +47,14 @@ void PathfinderPlayer::InitState(std::wstring textureFilename, std::wstring scri
 		_stateMap[eStateType::ST_IDLE] = state;
 	}
 	{
-		State* state = new PathfindingState(this);
+		//State* state = new PathfindingState(this);
+		State* state = new PathfindingImmedateState(this);
 		state->CreateSprite(textureFilename, scriptFilename);
 		_stateMap[eStateType::ST_PATHFINDING] = state;
+	}
+	{
+		State* state = new PathfindingMoveState(this);
+		state->CreateSprite(textureFilename, scriptFilename);
+		_stateMap[eStateType::ST_MOVE] = state;
 	}
 }

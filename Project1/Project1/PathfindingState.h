@@ -1,10 +1,12 @@
 #pragma once
 
 #include <queue>
+#include "GlobalTypes.h"
 #include "State.h"
 
 class Character;
 class TileCell;
+class Map;
 
 class PathfindingState : public State
 {
@@ -18,7 +20,7 @@ public:
 	void Update(float deltaTime);
 
 	// Pathfinding
-private:
+protected:
 	struct sPathCommand
 	{
 		TileCell* tileCell;
@@ -36,7 +38,7 @@ private:
 	{
 		bool operator()(sPathCommand& a, sPathCommand& b)
 		{
-			return a.heuristic < b.heuristic;
+			return a.heuristic > b.heuristic;
 		}
 	};
 
@@ -51,6 +53,10 @@ private:
 	void UpdateBuildPath();
 
 	TilePoint GetSearchTilePositionByDirection(TilePoint tilePosition, eDirection direction);
+
+	float CalcSimpleHeuristic(TileCell* current, TileCell* search, TileCell* goal);
+	float CalcComplexHeuristic(TileCell* search, TileCell* goal);
+	float CalcAStarHeuristic(float distanceFromStart, TileCell* search, TileCell* goal);
 
 	void CheckTestMark(TileCell* tileCell);
 	void CheckBuildTestMark(TileCell* tileCell);

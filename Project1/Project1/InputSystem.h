@@ -27,4 +27,18 @@ public:
 	void KeyDown(unsigned int keyCode);
 	void KeyUp(unsigned int keyCode);
 	bool IsKeyDown(unsigned int keyCode);
+
+	// Mouse
+private:
+	bool _isMouseDown;
+	int _mouseX;
+	int _mouseY;
+
+public:
+	void MouseDown(int x, int y);
+	void MouseUp();
+
+	bool IsMouseDown() { return _isMouseDown; }
+	int GetMouseX() { return _mouseX; }
+	int GetMouseY() { return _mouseY; }
 };

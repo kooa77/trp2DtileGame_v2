@@ -1,5 +1,6 @@
 #include "ComponentSystem.h"
 #include "Map.h"
+#include "TileCell.h"
 #include "Sprite.h"
 #include "Font.h"
 #include "MoveState.h"
@@ -41,9 +42,16 @@ void Character::Init(std::wstring textureFilename, std::wstring scriptFilename)
 		Map* map = (Map*)ComponentSystem::GetInstance()->FindComponent(L"Map");
 		if (NULL != map)
 		{
-			_tilePosition.x = rand() % map->GetWidth();
-			_tilePosition.y = rand() % map->GetHeight();
-
+			TilePoint tilePos;
+			tilePos.x = rand() % map->GetWidth();
+			tilePos.y = rand() % map->GetHeight();
+			while (false == map->GetTileCell(tilePos)->CanMove())
+			{
+				tilePos.x = rand() % map->GetWidth();
+				tilePos.y = rand() % map->GetHeight();
+			}
+			_tilePosition = tilePos;
+			
 			map->SetTileComponent(_tilePosition, this);
 		}		
 	}
@@ -190,6 +198,20 @@ void Character::MoveStop()
 std::vector<Component*> Character::Collision(std::vector<Component*> collisionList)
 {
 	return collisionList;
+}
+
+TileCell* Character::PopPathfindingCell()
+{
+	TileCell* tileCell = _pathfindingCellStack.top();
+	_pathfindingCellStack.pop();
+	return tileCell;
+}
+
+bool Character::IsEmptyPathfindingStack()
+{
+	if (0 != _pathfindingCellStack.size())
+		return false;
+	return true;
 }
 
 void Character::UpdateAttackCooltime(float deltaTime)

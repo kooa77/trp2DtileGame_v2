@@ -82,7 +82,6 @@ void PathfindingState::UpdatePathfinding()
 			if (command.tileCell->GetTilePosition().x == _targetTileCell->GetTilePosition().x &&
 				command.tileCell->GetTilePosition().y == _targetTileCell->GetTilePosition().y)
 			{
-				//_nextState = eStateType::ST_MOVE;
 				_reverseTileCell = command.tileCell;
 				_updateState = eUpdateState::BUILD_PATH;
 				return;
@@ -103,7 +102,35 @@ void PathfindingState::UpdatePathfinding()
 					)
 				{
 					float distanceFromStart = command.tileCell->GetDistanceFromStart() + 1;
-					float heuristic = distanceFromStart;
+										
+					float heuristic = 0.0f;
+
+					float distance = 0.0f;
+					int distanceW = searchTileCell->GetTilePosition().x - _targetTileCell->GetTilePosition().x;
+					int distanceH = searchTileCell->GetTilePosition().y - _targetTileCell->GetTilePosition().y;
+					distanceW = distanceW * distanceW;
+					distanceH = distanceH * distanceH;
+					distance = sqrtf(distanceW + distanceH);
+
+					/*
+					if (distance < 10)
+					{
+						heuristic = CalcAStarHeuristic(distanceFromStart, searchTileCell, _targetTileCell);
+					}
+					else if (distance < 10)
+					{
+						heuristic = CalcComplexHeuristic(searchTileCell, _targetTileCell);
+					}
+					else if (distance < 20)
+					{
+						heuristic = CalcSimpleHeuristic(command.tileCell, searchTileCell, _targetTileCell);
+					}
+					else
+					{
+						heuristic = distanceFromStart;
+					}
+					*/
+					heuristic = CalcAStarHeuristic(distanceFromStart, searchTileCell, _targetTileCell);
 					
 					if (NULL == searchTileCell->GetPrevTileCell())
 					{
@@ -116,7 +143,7 @@ void PathfindingState::UpdatePathfinding()
 						newCommand.heuristic = heuristic;
 						_pathfindingQueue.push(newCommand);
 
-						CheckTestMark(searchTileCell);
+						//CheckTestMark(searchTileCell);
 					}
 				}
 			}
@@ -130,8 +157,13 @@ void PathfindingState::UpdateBuildPath()
 	// 거꾸로 돌아가면서 길을 도출
 	if (NULL != _reverseTileCell)
 	{
-		CheckBuildTestMark(_reverseTileCell);
+		//CheckBuildTestMark(_reverseTileCell);
+		_character->PushPathfindingCell(_reverseTileCell);
 		_reverseTileCell = _reverseTileCell->GetPrevTileCell();
+	}
+	else
+	{
+		_nextState = eStateType::ST_MOVE;
 	}
 }
 
@@ -154,6 +186,64 @@ TilePoint PathfindingState::GetSearchTilePositionByDirection(TilePoint tilePosit
 		break;
 	}
 	return searchTilePosition;
+}
+
+float PathfindingState::CalcSimpleHeuristic(TileCell* current, TileCell* search, TileCell* goal)
+{
+	float heuristic = 0.0f;
+
+	int diffFromCurrent;
+	int diffFromSearch;
+
+	// X
+	{
+		diffFromCurrent = current->GetTilePosition().x - goal->GetTilePosition().x;
+		if (diffFromCurrent < 0)
+			diffFromCurrent = -diffFromCurrent;
+
+		diffFromSearch = search->GetTilePosition().x - goal->GetTilePosition().x;
+		if (diffFromSearch < 0)
+			diffFromSearch = -diffFromSearch;
+
+		if (diffFromSearch < diffFromCurrent)
+			heuristic -= 1.0f;
+		else if(diffFromCurrent < diffFromSearch)
+			heuristic += 1.0f;
+	}
+
+	// Y
+	{
+		diffFromCurrent = current->GetTilePosition().y - goal->GetTilePosition().y;
+		if (diffFromCurrent < 0)
+			diffFromCurrent = -diffFromCurrent;
+
+		diffFromSearch = search->GetTilePosition().y - goal->GetTilePosition().y;
+		if (diffFromSearch < 0)
+			diffFromSearch = -diffFromSearch;
+
+		if (diffFromSearch < diffFromCurrent)
+			heuristic -= 1.0f;
+		else if (diffFromCurrent < diffFromSearch)
+			heuristic += 1.0f;
+	}
+	
+	return heuristic;
+}
+
+float PathfindingState::CalcComplexHeuristic(TileCell* search, TileCell* goal)
+{
+	int distanceW = search->GetTilePosition().x - goal->GetTilePosition().x;
+	int distanceH = search->GetTilePosition().y - goal->GetTilePosition().y;
+
+	distanceW = distanceW * distanceW;
+	distanceH = distanceH * distanceH;
+
+	return (float)(distanceW + distanceH);
+}
+
+float PathfindingState::CalcAStarHeuristic(float distanceFromStart, TileCell* search, TileCell* goal)
+{
+	return distanceFromStart + CalcComplexHeuristic(search, goal);
 }
 
 void PathfindingState::CheckTestMark(TileCell* tileCell)
@@ -202,3 +292,4 @@ void PathfindingState::CheckBuildTestMark(TileCell* tileCell)
 		player->SetDirection(direction);
 	}
 }
+

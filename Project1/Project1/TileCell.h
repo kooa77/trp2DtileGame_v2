@@ -23,6 +23,7 @@ public:
 	void Reset();
 
 	void SetPosition(Point position);
+	Point GetPosition() { return _position; }
 
 	// Component List
 private:

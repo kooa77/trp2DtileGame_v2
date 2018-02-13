@@ -1,5 +1,6 @@
 #include "ComponentSystem.h"
 #include "Map.h"
+#include "TileCell.h"
 #include "Sprite.h"
 
 #include "RecoveryItem.h"
@@ -21,8 +22,15 @@ void RecoveryItem::Init(std::wstring textureFilename, std::wstring scriptFilenam
 		Map* map = (Map*)ComponentSystem::GetInstance()->FindComponent(L"Map");
 		if (NULL != map)
 		{
-			_tilePosition.x = rand() % map->GetWidth();
-			_tilePosition.y = rand() % map->GetHeight();
+			TilePoint tilePos;
+			tilePos.x = rand() % map->GetWidth();
+			tilePos.y = rand() % map->GetHeight();
+			while (false == map->GetTileCell(tilePos)->CanMove())
+			{
+				tilePos.x = rand() % map->GetWidth();
+				tilePos.y = rand() % map->GetHeight();
+			}
+			_tilePosition = tilePos;
 			map->SetTileComponent(_tilePosition, this);
 		}
 	}

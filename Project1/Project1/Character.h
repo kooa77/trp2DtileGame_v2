@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <stack>
 #include "GlobalTypes.h"
 #include "Component.h"
 
@@ -70,6 +71,8 @@ protected:
 	eDirection _nextDirection;
 	std::vector<Component*> _targetList;
 
+	std::stack<TileCell*> _pathfindingCellStack;
+
 public:
 	virtual void UpdateAI(float deltaTime);
 	void MoveStart(TilePoint newTilePosition);
@@ -85,6 +88,10 @@ public:
 	void SetTarget(std::vector<Component*> targetList) { _targetList = targetList; }
 	std::vector<Component*> GetTargetList() { return _targetList; }
 	void ResetTarget() { _targetList.clear(); }
+
+	void PushPathfindingCell(TileCell* tileCell) { _pathfindingCellStack.push(tileCell); }
+	TileCell* PopPathfindingCell();
+	bool IsEmptyPathfindingStack();
 
 	// CoolTime
 protected:

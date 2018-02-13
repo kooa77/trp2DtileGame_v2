@@ -14,7 +14,6 @@ PathfinderMonster::~PathfinderMonster()
 void PathfinderMonster::Init(std::wstring textureFilename, std::wstring scriptFilename)
 {
 	Monster::Init(textureFilename, scriptFilename);
-
 	/*
 	// 위치 고정
 	Map* map = (Map*)ComponentSystem::GetInstance()->FindComponent(L"Map");

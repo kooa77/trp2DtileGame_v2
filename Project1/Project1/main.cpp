@@ -206,8 +206,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 	Component* midTileObject = tileCell->GetComponentList().front();
 	map->SetViewer(midTileObject);
 
-	TileCell* targetTileCell = map->GetTileCell(monster->GetTilePosition());
-	character->SetTargetTileCell(targetTileCell);
+	//TileCell* targetTileCell = map->GetTileCell(monster->GetTilePosition());
+	//character->SetTargetTileCell(targetTileCell);
 
 	// FPS 결정 (60fps)
 	float frameTime = 1.0f / 60.0f;
@@ -347,9 +347,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// 메시지 처리
+	int x = 0;
+	int y = 0;
 	switch (msg)
 	{
 	case WM_LBUTTONDOWN:
+		x = LOWORD(lParam);
+		y = HIWORD(lParam);
+		InputSystem::GetInstance()->MouseDown(x, y);
+		return 0;
+	case WM_LBUTTONUP:
+		InputSystem::GetInstance()->MouseUp();
 		return 0;
 	case WM_KEYDOWN:
 		InputSystem::GetInstance()->KeyDown(wParam);

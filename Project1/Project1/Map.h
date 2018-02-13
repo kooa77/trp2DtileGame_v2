@@ -42,6 +42,10 @@ public:
 	int GetWidth() { return _width; }
 	int GetHeight() { return _height; }
 
+	void CreateTiles(std::wstring scriptFilename);
+	void CreateMazeTiles(std::wstring scriptFilename);
+	bool IsConnectedCell(int tileX, int tileY);
+
 	// Viewer
 private:
 	Component* _viewer;
@@ -65,6 +69,7 @@ public:
 	Component* FindComponentInRange(Component* finderr, int range, std::vector<eComponentType> findTypeList);
 	bool CanMoveTile(TilePoint tilePosition);
 	TileCell* GetTileCell(TilePoint tilePosition);
+	TileCell* FindTileCellByMousePosition(int x, int y);
 
 	std::vector<Component*> GetTileComponentList(TilePoint tilePosition);
 
